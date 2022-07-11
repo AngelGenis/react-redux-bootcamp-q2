@@ -29,6 +29,20 @@ export const Links = styled(Link)`
   color: #000;
 `;
 
+export const LogoutButton = styled.p`
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: #000;
+`;
+
+
 export const Text = styled.p`
   display: block;
   text-align: center;

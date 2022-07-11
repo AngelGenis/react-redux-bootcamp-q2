@@ -7,8 +7,8 @@ export const Container = styled.div`
     width: 100%;
     align-items: center;
     background-color: var(--background);
-    height: 100vh;
     justify-content: center;
+    margin-top: 50px;
 `
 
 export const CardLogin = styled.div`

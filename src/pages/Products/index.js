@@ -5,11 +5,13 @@ import { ProductDetails } from '../../components/ProductDetails';
 import { Search } from '../../components/Search';
 import { data } from '../../utils/data';
 import { ProductCard } from '../../components/ProductCard';
+import { useAuth } from '../../hooks/useAuth';
 
 export const Products = () => {
   const [productSelected, setProductSelected] = useState({});
   const [categorySelected, setCategorySelected] = useState('');
   const [search, setSearch] = useState('');
+  useAuth();
 
   const handleCategoryCheck = (val, name) => {
     setProductSelected({});
@@ -26,7 +28,7 @@ export const Products = () => {
       }
 
     }),
-    [data, categorySelected, search]
+    [categorySelected, search]
   )
 
   const handleSearch = useCallback((value) => {
