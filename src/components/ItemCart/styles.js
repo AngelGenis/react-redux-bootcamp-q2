@@ -4,7 +4,7 @@ export const ItemCartWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding-top: 24px;
+    padding: 24px 0;
     border-top: 1px solid #CCCCCC;
 `;
 

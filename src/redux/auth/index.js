@@ -30,5 +30,6 @@ export const authSlice = createSlice({
 export const { AUTHENTICATE, LOGOUT, SET_DID_TRY_AL } = authSlice.actions;
 
 export const getAuth = state => state?.auth.userId;
+export const didTryAutoLogin = state => state.auth.didTryAutoLogin;
 
 export default authSlice.reducer;

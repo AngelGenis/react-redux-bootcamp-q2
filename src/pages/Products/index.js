@@ -1,68 +1,106 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import { Filter } from '../../components/Filter'
 import { Container, Grid, Body } from './styles'
 import { ProductDetails } from '../../components/ProductDetails';
 import { Search } from '../../components/Search';
-import { data } from '../../utils/data';
 import { ProductCard } from '../../components/ProductCard';
-import { useAuth } from '../../hooks/useAuth';
+import { addToCart, fetchCategories, fetchProducts, getLoadingProducts, getFavorites, getProducts, getCategories, getItemsCart, deleteCart, addToFavorites, deleteFromFavorites } from '../../redux/products';
+import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress } from '@mui/material';
+import { didTryAutoLogin } from '../../redux/auth';
 
 export const Products = () => {
   const [productSelected, setProductSelected] = useState({});
   const [categorySelected, setCategorySelected] = useState('');
   const [search, setSearch] = useState('');
-  useAuth();
+  const products = useSelector(getProducts);
+  const categories = useSelector(getCategories)
+  const isLoadingProducts = useSelector(getLoadingProducts);
+  const items = useSelector(getItemsCart);
+  const favorites = useSelector(getFavorites)
+  const dispatch = useDispatch();
+  const didTry = useSelector(didTryAutoLogin)
+
+  useEffect(() => {
+    const promise = dispatch(fetchProducts({
+      category: categorySelected,
+      query: search
+    }))
+
+    return () => {
+      // `createAsyncThunk` attaches an `abort()` method to the promise
+      promise.abort()
+    }
+  }, [dispatch, categorySelected, search]);
+
+  useEffect(() => {
+    dispatch(fetchCategories())
+  }, [dispatch]);
 
   const handleCategoryCheck = (val, name) => {
     setProductSelected({});
     name === categorySelected ? setCategorySelected('') : setCategorySelected(name);
   }
 
-  const filteredData = useMemo(() =>
-    data.data.products.items?.filter((item) => {
-      const filteredByName = item.name.toLowerCase().includes(search?.toLowerCase());
-      if (categorySelected) {
-        return item.categories.includes(categorySelected) && filteredByName;
-      } else {
-        return filteredByName;
-      }
-
-    }),
-    [categorySelected, search]
-  )
-
   const handleSearch = useCallback((value) => {
     setSearch(value.target.value);
   }, [])
 
+  if (!didTry) {
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    )
+  }
+
   return (
     <Container>
       <Filter
-        categories={data.data.categories.items}
+        categories={categories}
         onCheck={handleCategoryCheck}
         categorySelected={categorySelected}
       />
       <Body>
         <Search onChange={handleSearch} value={search} />
-        <Grid>
-          {
-            filteredData?.slice(0, 10).map((product) => {
-              const { id, images, name, price } = product;
+        {
+          isLoadingProducts ?
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
+              <CircularProgress />
+            </div>
+            : (
+              <Grid>
+                {
+                  products?.map((product) => {
+                    const { id, images, name, price } = product;
+                    const added = items.some(e => e.id === id);
+                    const favorite = favorites.some(e => e.id === id);
 
-              return (
-                <ProductCard
-                  key={id}
-                  image={images[0]}
-                  name={name}
-                  price={price}
-                  onClick={() => { setProductSelected(product) }}
-                />
-              )
-            })
-          }
-        </Grid>
+                    return (
+                      <ProductCard
+                        key={id}
+                        image={images[0]}
+                        name={name}
+                        price={price}
+                        onClick={() => { setProductSelected(product) }}
+                        deleteFromCart={() => { dispatch(deleteCart(id)) }}
+                        addToCart={() => { dispatch(addToCart(id)) }}
+                        added={added}
+                        favorite={favorite}
+                        selected={productSelected.id === id}
+                        onClickFavorite={() => { favorite ? dispatch(deleteFromFavorites(id)) : dispatch(addToFavorites(id)) }}
+                      />
+                    )
+                  })
+                }
+              </Grid>
+            )
+        }
+
       </Body>
-      <ProductDetails product={productSelected} />
+      <ProductDetails
+        product={productSelected}
+      />
 
     </Container>
   )

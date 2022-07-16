@@ -5,9 +5,17 @@ export const CardContainer = styled.div`
     border: 1px solid #F1F1F1;
     border-radius: 20px;
     width: 30%;
-    height: 327px;
+    min-height: 327px;
     padding: 10px;
     cursor: pointer;
+    transform:  ${props => props.selected ? 'scale(1.05)' : 'scale(1)'};
+    box-shadow:  ${props => props.selected ? '0px 1px 10px lightgray' : '0px'} ;
+    transition-duration: .05s;
+
+    &:hover{
+        transition-duration: .05s;
+        transform: scale(1.05);
+    }
 `
 
 export const TextName = styled.p`
