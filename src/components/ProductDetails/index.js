@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { MainButton } from '../Buttons';
 import { Price, TextName, TextPrice } from '../ProductCard/styles';
 import { Container, DescriptionLabel, ImageContainer } from './styles';
 
@@ -10,7 +9,6 @@ export const ProductDetails = ({ product }) => {
     useEffect(() => {
         setImageSelected(images?.length > 0 ? images[0] : "");
     }, [images]);
-
 
     return (
         <Container>
@@ -49,12 +47,9 @@ export const ProductDetails = ({ product }) => {
                         <br />
                         <br />
 
-                        <MainButton> Add to cart </MainButton>
                     </>
                 )
             }
-
-
         </Container>
     )
 }

@@ -11,19 +11,22 @@ import { Login } from '../pages/Login/index';
 import { Home } from '../pages/Home/index';
 import { Cart } from '../pages/Cart/index';
 import store from '../redux/app/store';
+import RootGaurd from './RootGuard';
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Provider store={store}>
         <Header />
-        <Routes>
-          <Route exact path='/' element={<Home />} />
-          <Route path='/products' element={<Products />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/login' element={<Login />} />
-        </Routes>
+        <RootGaurd>
+          <Routes>
+            <Route exact path='/' element={<Home />} />
+            <Route path='/products' element={<Products />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/login' element={<Login />} />
+          </Routes>
+        </RootGaurd>
       </Provider>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 };

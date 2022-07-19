@@ -3,7 +3,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { RemoveButtonContainer, ItemCartWrapper, CounterContainer, ImageContainer, ItemContent, TotalPriceContainer, ItemTitle, PriceText, TotalPrice } from './styles'
 
-export const ItemCart = ({ id, image, name, price, addItem, deleteItem, quantity = 0 }) => {
+export const ItemCart = ({ id, image, name, price, addItem, deleteItem, quantity = 0, onRemove, added }) => {
+
     return (
         <ItemCartWrapper>
             <ImageContainer>
@@ -22,9 +23,9 @@ export const ItemCart = ({ id, image, name, price, addItem, deleteItem, quantity
             </ItemContent>
 
             <TotalPriceContainer>
-                <TotalPrice>${price * quantity}</TotalPrice>
+                <TotalPrice>${parseFloat(price * quantity).toFixed(2)}</TotalPrice>
 
-                <RemoveButtonContainer>
+                <RemoveButtonContainer onClick={onRemove}>
                     <DeleteIcon />
                     <PriceText style={{ color: 'black' }}>Remove</PriceText>
                 </RemoveButtonContainer>

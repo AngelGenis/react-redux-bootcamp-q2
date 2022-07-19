@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffectLayout } from 'react';
 import { Input } from '../../components/Inputs';
 import { Container, CardLogin, LoginText, Error } from './styles';
 import { MainButton } from '../../components/Buttons';
@@ -12,7 +12,6 @@ export const Login = () => {
         email: '',
         password: ''
     })
-
 
     const handlerChange = (value, name) => {
         setError(null);
@@ -30,7 +29,6 @@ export const Login = () => {
             login(data.email, data.password);
         }
     }
-
 
     return (
         <Container>

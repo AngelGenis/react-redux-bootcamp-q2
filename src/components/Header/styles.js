@@ -27,6 +27,7 @@ export const Links = styled(Link)`
   font-size: 20px;
   line-height: 28px;
   color: #000;
+  position: relative;
 `;
 
 export const LogoutButton = styled.p`

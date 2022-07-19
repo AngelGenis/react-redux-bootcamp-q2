@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AUTHENTICATE, getAuth, LOGOUT, SET_DID_TRY_AL } from '../redux/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -15,10 +15,6 @@ export const useAuth = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     let timer;
-
-    useEffect(() => {
-        tryLogin()
-    }, [])
 
     const tryLogin = async () => {
         setIsLoading(true);
