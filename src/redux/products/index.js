@@ -68,7 +68,8 @@ const initialState = {
 
     categories: [],
     error: '',
-    solicitudID: null
+    solicitudID: null,
+    showFavorites: false
 }
 
 export const productsSlice = createSlice({
@@ -117,6 +118,9 @@ export const productsSlice = createSlice({
         },
         deleteFromFavorites(state, action) {
             state.favorites = state.favorites.filter(item => item.id !== action.payload);
+        },
+        setShowFavorites(state, action) {
+            state.showFavorites = action.payload;
         }
 
     },
@@ -156,14 +160,17 @@ export const productsSlice = createSlice({
 })
 
 
-export const { addToCart, deleteCart, deleteItem, addToFavorites, deleteFromFavorites } = productsSlice.actions;
+export const { addToCart, deleteCart, deleteItem, addToFavorites, deleteFromFavorites, setShowFavorites } = productsSlice.actions;
 
 export const getProducts = state => state.products.products;
 export const getLoadingProducts = state => state.products.loading;
 export const getItemsCart = state => state.products.cart.items;
 export const getCategories = state => state.products.categories;
 export const getTotalItems = state => state.products.cart.totalItems;
+export const getTotalFavoriteItems = state => state.products.favorites;
 export const getTotalPrice = state => state.products.cart.totalPrice;
 export const getFavorites = state => state.products.favorites;
+export const getShowFavorites = state => state.products.showFavorites;
+
 
 export default productsSlice.reducer;

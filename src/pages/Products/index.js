@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import { Filter } from '../../components/Filter'
-import { Container, Grid, Body } from './styles'
+import { Container, Grid, Body, Tittle } from './styles'
 import { ProductDetails } from '../../components/ProductDetails';
 import { Search } from '../../components/Search';
 import { ProductCard } from '../../components/ProductCard';
-import { addToCart, fetchCategories, fetchProducts, getLoadingProducts, getFavorites, getProducts, getCategories, getItemsCart, deleteCart, addToFavorites, deleteFromFavorites } from '../../redux/products';
+import { addToCart, fetchCategories, fetchProducts, getLoadingProducts, getFavorites, getProducts, getCategories, getItemsCart, deleteCart, addToFavorites, deleteFromFavorites, getShowFavorites, setShowFavorites } from '../../redux/products';
 import { useDispatch, useSelector } from 'react-redux';
 import { CircularProgress } from '@mui/material';
 import { didTryAutoLogin } from '../../redux/auth';
@@ -19,7 +19,9 @@ export const Products = () => {
   const items = useSelector(getItemsCart);
   const favorites = useSelector(getFavorites)
   const dispatch = useDispatch();
-  const didTry = useSelector(didTryAutoLogin)
+  const didTry = useSelector(didTryAutoLogin);
+  const showFavorites = useSelector(getShowFavorites);
+  const data = showFavorites ? favorites : products;
 
   useEffect(() => {
     const promise = dispatch(fetchProducts({
@@ -39,10 +41,12 @@ export const Products = () => {
 
   const handleCategoryCheck = (val, name) => {
     setProductSelected({});
+    showFavorites && dispatch(setShowFavorites(false))
     name === categorySelected ? setCategorySelected('') : setCategorySelected(name);
   }
 
   const handleSearch = useCallback((value) => {
+    showFavorites && dispatch(setShowFavorites(false))
     setSearch(value.target.value);
   }, [])
 
@@ -63,6 +67,7 @@ export const Products = () => {
       />
       <Body>
         <Search onChange={handleSearch} value={search} />
+        {showFavorites && <Tittle>Estos son tus productos favoritos</Tittle>}
         {
           isLoadingProducts ?
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
@@ -71,7 +76,7 @@ export const Products = () => {
             : (
               <Grid>
                 {
-                  products?.map((product) => {
+                  data?.map((product) => {
                     const { id, images, name, price } = product;
                     const added = items.some(e => e.id === id);
                     const favorite = favorites.some(e => e.id === id);

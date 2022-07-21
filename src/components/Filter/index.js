@@ -48,6 +48,8 @@ export const Filter = ({ categories, onCheck, categorySelected }) => {
                     })
                 }
             </CategoriesContainer>
+
+
         </Container>
     )
 }

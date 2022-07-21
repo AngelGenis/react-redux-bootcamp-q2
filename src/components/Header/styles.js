@@ -30,6 +30,23 @@ export const Links = styled(Link)`
   position: relative;
 `;
 
+export const FavoriteButton = styled.div`
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: #000;
+  position: relative;
+  cursor: pointer;
+`
+
+
+
 export const LogoutButton = styled.p`
   display: block;
   text-align: center;
